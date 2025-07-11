@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagar com Pix</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #00bcd4;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        #qrcode {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .payment-info {
+            font-size: 1.2em;
+        }
+
+        .payment-info p {
+            margin: 10px 0;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ffcc00;
+            color: #222;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+
+        .back-button:hover {
+            background-color: #ffaa00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Pagamento via Pix</h2>
+        <div class="payment-info">
+            <p><strong>Valor: </strong><span id="valor"></span></p>
+        </div>
+
+        <div id="qrcode"></div>
+
+        <a href="index.html" class="back-button">Voltar ao Início</a>
+    </div>
+
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script>
+        // Obtendo os parâmetros da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const valor = parseFloat(urlParams.get('valor')); // Pegando o valor do pagamento
+
+        // Atualizando o valor na página
+        document.getElementById('valor').textContent = `R$ ${valor.toFixed(2)}`;
+
+        // Gerando código Pix com o valor correto
+        const codigoPix = `00020126430014BR.GOV.BCB.PIX0121maffioletii@gmail.com520400005303986540${valor.toFixed(2)}5802BR5923Igor Felipe Maffioletti6009SAO PAULO61080540900062250521y5sbifp7GloQ5t7bqb1am6304E30F`;
+
+        // Gerando o QR Code com o valor atualizado
+        new QRCode(document.getElementById("qrcode"), {
+            text: codigoPix,
+            width: 256,
+            height: 256,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.L
+        });
+    </script>
+</body>
+</html>

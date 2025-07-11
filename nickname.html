@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digite seu Nickname</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #00bcd4;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #0288a7;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.5s ease;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .input {
+            padding: 15px;
+            margin: 15px 0;
+            width: 300px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .input:focus {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+        }
+
+        .buy-button {
+            display: inline-block;
+            padding: 15px 30px;
+            margin-top: 20px;
+            background-color: #ffcc00;
+            color: #222;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .buy-button:hover {
+            background-color: #ffaa00;
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Digite seu Nickname</h2>
+        <input type="text" id="nickname" placeholder="Seu nickname" class="input">
+        <button onclick="irParaCarrinho()" class="buy-button">Continuar</button>
+    </div>
+
+    <script>
+        function irParaCarrinho() {
+            const nickname = document.getElementById('nickname').value;
+            const urlParams = new URLSearchParams(window.location.search);
+            const produto = urlParams.get('produto');
+            const preco = urlParams.get('preco');
+            const imagem = urlParams.get('imagem'); // Pega a URL da imagem
+
+            if (nickname) {
+                // Redirecionando para carrinho.html com os parâmetros adicionais
+                window.location.href = `carrinho.html?produto=${produto}&preco=${preco}&nickname=${nickname}&imagem=${imagem}`;
+            } else {
+                alert("Por favor, insira seu nickname!");
+            }
+        }
+    </script>
+</body>
+</html>

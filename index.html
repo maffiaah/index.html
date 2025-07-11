@@ -1,288 +1,195 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Blog Dinâmico</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: 
-        linear-gradient(rgba(0, 200, 200, 0.15), rgba(0, 200, 200, 0.15)),
-        url('https://i.imgur.com/jQ0kSAr.jpeg') no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja VIP - Minecraft</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #00bcd4;
+            color: white;
+            text-align: center;
+        }
+        .vip-card {
+            display: inline-block;
+            width: 250px;
+            background-color: #333;
+            padding: 15px;
+            margin: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            vertical-align: top;
+        }
+        .vip-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+        .vip-card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .buy-button, .desc-button {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-top: 10px;
+            background-color: #ffcc00;
+            color: #222;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .desc-button {
+            background-color: #007BFF;
+            color: white;
+        }
+        
+        /* Animação para o botão de compra */
+        .buy-button:hover {
+            background-color: #ff9900;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Animação para o botão de descrição */
+        .desc-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            text-align: center;
+            padding-top: 100px;
+        }
+        .modal-content {
+            background-color: #333;
+            color: white;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 50%;
+        }
+        .close {
+            color: #ffcc00;
+            float: right;
+            font-size: 28px;
+            cursor: pointer;
+        }
 
-    .container {
-      max-width: 800px;
-      margin: 40px auto;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    header h1 {
-      color: #00ffff;
-      font-size: 2.5rem;
-      margin-bottom: 5px;
-    }
-
-    header p {
-      color: #ccf;
-    }
-
-    form {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 30px;
-    }
-
-    form input[type="text"],
-    form textarea {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0 15px 0;
-      border: none;
-      border-radius: 4px;
-      font-size: 1rem;
-      background: #eef;
-      color: #000;
-    }
-
-    form input[type="file"] {
-      margin-bottom: 15px;
-      color: #fff;
-    }
-
-    form button {
-      background-color: #00cccc;
-      color: #fff;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    form button:hover {
-      background-color: #009999;
-    }
-
-    .post {
-      background: rgba(255, 255, 255, 0.12);
-      padding: 20px;
-      margin-bottom: 25px;
-      border-radius: 8px;
-      position: relative;
-    }
-
-    .post h2 {
-      color: #00ffff;
-      margin-top: 0;
-    }
-
-    .post p {
-      line-height: 1.6;
-      color: #ddf;
-    }
-
-    .post img {
-      max-width: 100%;
-      border-radius: 6px;
-      margin-top: 10px;
-    }
-
-    .post video {
-      max-width: 100%;
-      border-radius: 6px;
-      margin-top: 10px;
-    }
-
-    .post .meta {
-      font-size: 0.9rem;
-      color: #bbf;
-      margin-bottom: 10px;
-    }
-
-    .delete-btn {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: #ff5555;
-      border: none;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .delete-btn:hover {
-      background: #cc0000;
-    }
-  </style>
+        /* Definindo as cores específicas para cada VIP */
+        .vip-desc {
+            color: yellow; /* Padrão para VIP */
+        }
+        .vip-plus-desc {
+            color: yellow; /* Padrão para VIP+ */
+        }
+        .vip-plus-desc .plus {
+            color: cyan; /* Cor do "+" em VIP */
+        }
+        .mvp-desc {
+            color: cyan; /* Padrão para MVP */
+        }
+        .mvp-plus-desc {
+            color: cyan; /* Padrão para MVP+ */
+        }
+        .mvp-plus-desc .plus {
+            color: yellow; /* Cor do "+" em MVP */
+        }
+        .leviathan-desc {
+            color: cyan; /* Padrão para LEVIATHAN */
+        }
+    </style>
 </head>
 <body>
+    <!-- Menu de Navegação -->
+    <nav>
+        <div class="logo">
+            <img src="https://i.imgur.com/Kub9rzq.png" alt="Logo">
+        </div>
+    </nav>
 
-  <div class="container">
-    <header>
-      <h1>Blog Dinâmico</h1>
-      <p>Crie, visualize e salve suas postagens!</p>
-    </header>
+    <div id="vipModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-text"></p>
+        </div>
+    </div>
 
-    <form id="postForm">
-      <input type="text" id="title" placeholder="Título da postagem" required />
-      <textarea id="content" placeholder="Escreva o conteúdo da postagem" rows="5" required></textarea>
+    <div class="vip-card">
+        <img src="https://i.imgur.com/cmxOKk0.jpeg" alt="VIP">
+        <h3>VIP</h3>
+        <p>R$ 20,00</p>
+        <a href="nickname.html" class="buy-button">Comprar</a>
+        <button class="desc-button" onclick="showDesc('VIP', 
+        'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 5 homes\nAcesso a 2 terrenos\nAcesso a Mina VIP\nBônus de mineração de 5%\nBônus de máquinas de 5%\nDesconto de 5% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit VIP Diário\nAcesso ao Kit VIP Semanal\nAcesso ao /megafone', 'vip-desc')">Descrição</button>
+    </div>
+    
+    <div class="vip-card">
+        <img src="https://i.imgur.com/mj5Lopx.jpeg" alt="VIP+">
+        <h3>VIP+<span class="plus">+</span></h3>
+        <p>R$ 30,00</p>
+        <a href="nickname.html" class="buy-button">Comprar</a>
+        <button class="desc-button" onclick="showDesc('VIP+', 
+		'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 7 homes\nAcesso a 3 terrenos\nAcesso a Mina VIP\nBônus de mineração de 8%\nBônus de máquinas de 8%\nDesconto de 8% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit VIP+ Diário\nAcesso ao Kit VIP+ Semanal\nAcesso ao /megafone', 'vip-plus-desc')">Descrição</button>
+    </div>
+    
+    <div class="vip-card">
+        <img src="https://i.imgur.com/HnHOmox.jpeg" alt="MVP">
+        <h3>MVP</h3>
+        <p>R$ 50,00</p>
+        <a href="nickname.html" class="buy-button">Comprar</a>
+        <button class="desc-button" onclick="showDesc('MVP',
+		'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 9 homes\nAcesso a 4 terrenos\nAcesso a Mina VIP\nBônus de mineração de 12%\nBônus de máquinas de 12%\nDesconto de 12% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit MVP Diário\nAcesso ao Kit MVP Semanal\nAcesso ao /megafone', 'mvp-desc')">Descrição</button>
+    </div>
+    
+    <div class="vip-card">
+        <img src="https://i.imgur.com/4MrhVSi.jpeg" alt="MVP+">
+        <h3>MVP+<span class="plus">+</span></h3>
+        <p>R$ 75,00</p>
+        <a href="nickname.html" class="buy-button">Comprar</a>
+        <button class="desc-button" onclick="showDesc('MVP+', 
+		'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 11 homes\nAcesso a 5 terrenos\nAcesso a Mina VIP\nBônus de mineração de 15%\nBônus de máquinas de 15%\nDesconto de 15% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit MVP+ Diário\nAcesso ao Kit MVP+ Semanal\nAcesso ao /megafone', 'mvp-plus-desc')">Descrição</button>
+    </div>
+    
+    <div class="vip-card">
+        <img src="https://i.imgur.com/sogicRh.jpeg" alt="LEVIATHAN">
+        <h3>LEVIATHAN</h3>
+        <p>R$ 200,00</p>
+        <a href="nickname.html" class="buy-button">Comprar</a>
+        <button class="desc-button" onclick="showDesc('LEVIATHAN', 
+		'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 20 homes\nAcesso a 7 terrenos\nAcesso a Mina VIP\nBônus de mineração de 25%\nBônus de máquinas de 25%\nDesconto de 25% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit LEVIATHAN Diário\nAcesso ao Kit LEVIATHAN Semanal\nAcesso ao /megafone', 'leviathan-desc')">Descrição</button>
+    </div>
 
-      <label style="display:block; margin-bottom:5px; color:#ccf;">Imagem (opcional):</label>
-      <input type="file" id="image" accept="image/*" />
+    <script>
+        function showDesc(title, text, descClass) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-text').innerText = text;
+            document.getElementById('modal-text').className = descClass;
+            document.getElementById('vipModal').style.display = 'block';
+        }
 
-      <label style="display:block; margin-top:15px; margin-bottom:5px; color:#ccf;">Vídeo (opcional):</label>
-      <input type="file" id="video" accept="video/*" />
+        function closeModal() {
+            document.getElementById('vipModal').style.display = 'none';
+        }
 
-      <button type="submit">Publicar Postagem</button>
-    </form>
-
-    <section id="posts"></section>
-  </div>
-
-  <script>
-    const form = document.getElementById('postForm');
-    const postsContainer = document.getElementById('posts');
-
-    // Carrega postagens salvas
-    window.addEventListener('load', () => {
-      const savedPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
-      savedPosts.forEach(post => renderPost(post));
-    });
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const title = document.getElementById('title').value.trim();
-      const content = document.getElementById('content').value.trim();
-      const imageInput = document.getElementById('image');
-      const videoInput = document.getElementById('video');
-      const date = new Date().toLocaleString();
-
-      if (!title || !content) {
-        alert('Por favor, preencha título e conteúdo.');
-        return;
-      }
-
-      const post = {
-        id: Date.now(),
-        title,
-        content,
-        date,
-        image: '',
-        video: ''
-      };
-
-      const promises = [];
-
-      if (imageInput.files[0]) {
-        const imgPromise = new Promise(resolve => {
-          const reader = new FileReader();
-          reader.onload = e => {
-            post.image = e.target.result;
-            resolve();
-          };
-          reader.readAsDataURL(imageInput.files[0]);
-        });
-        promises.push(imgPromise);
-      }
-
-      if (videoInput.files[0]) {
-        const vidPromise = new Promise(resolve => {
-          const reader = new FileReader();
-          reader.onload = e => {
-            post.video = e.target.result;
-            resolve();
-          };
-          reader.readAsDataURL(videoInput.files[0]);
-        });
-        promises.push(vidPromise);
-      }
-
-      Promise.all(promises).then(() => {
-        saveAndRender(post);
-        form.reset();
-      });
-    });
-
-    function saveAndRender(post) {
-      const savedPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
-      savedPosts.unshift(post);
-      localStorage.setItem('blogPosts', JSON.stringify(savedPosts));
-      renderPost(post, true);
-    }
-
-    function renderPost(post, prepend = false) {
-      const postDiv = document.createElement('div');
-      postDiv.classList.add('post');
-      postDiv.setAttribute('data-id', post.id);
-
-      const titleEl = document.createElement('h2');
-      titleEl.textContent = post.title;
-
-      const dateEl = document.createElement('div');
-      dateEl.classList.add('meta');
-      dateEl.textContent = `Postado em: ${post.date}`;
-
-      const contentEl = document.createElement('p');
-      contentEl.textContent = post.content;
-
-      const deleteBtn = document.createElement('button');
-      deleteBtn.textContent = 'Excluir';
-      deleteBtn.classList.add('delete-btn');
-      deleteBtn.onclick = () => deletePost(post.id);
-
-      postDiv.appendChild(deleteBtn);
-      postDiv.appendChild(titleEl);
-      postDiv.appendChild(dateEl);
-      postDiv.appendChild(contentEl);
-
-      if (post.image) {
-        const img = document.createElement('img');
-        img.src = post.image;
-        postDiv.appendChild(img);
-      }
-
-      if (post.video) {
-        const video = document.createElement('video');
-        video.src = post.video;
-        video.controls = true;
-        postDiv.appendChild(video);
-      }
-
-      if (prepend) {
-        postsContainer.prepend(postDiv);
-      } else {
-        postsContainer.appendChild(postDiv);
-      }
-    }
-
-    function deletePost(id) {
-      if (!confirm('Tem certeza que deseja excluir esta postagem?')) return;
-
-      const savedPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
-      const updatedPosts = savedPosts.filter(p => p.id !== id);
-      localStorage.setItem('blogPosts', JSON.stringify(updatedPosts));
-
-      const postEl = document.querySelector(`.post[data-id="${id}"]`);
-      if (postEl) postEl.remove();
-    }
-  </script>
-
+        window.onclick = function(event) {
+            if (event.target === document.getElementById('vipModal')) {
+                closeModal();
+            }
+        }
+    </script>
 </body>
 </html>

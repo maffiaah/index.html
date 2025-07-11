@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho de Compras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #00bcd4;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2, h3 {
+            font-size: 1.5em;
+        }
+
+        p {
+            font-size: 1.2em;
+        }
+
+        .product-img {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .buy-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #ffcc00;
+            color: #222;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 10px;
+            transition: 0.3s;
+            font-size: 1.1em;
+        }
+
+        .buy-button:hover {
+            background-color: #ffaa00;
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-info {
+            margin-bottom: 30px;
+        }
+
+        .payment-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .payment-options button {
+            width: 200px;
+        }
+
+        .discount-code {
+            margin: 20px 0;
+        }
+
+        .discount-code input {
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 60%;
+        }
+
+        .discount-code button {
+            padding: 10px 20px;
+            background-color: #ff6666;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .discount-code button:hover {
+            background-color: #ff4444;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .buy-button {
+                width: 100%;
+            }
+
+            .payment-options {
+                flex-direction: column;
+            }
+
+            .product-img {
+                max-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="product-info">
+            <!-- A imagem do produto será atualizada dinamicamente -->
+            <img id="productImage" src="" alt="Produto" class="product-img">
+            <h2>Resumo da Compra</h2>
+            <p id="produto"></p>
+            <p id="nickname"></p>
+            <p id="preco"></p>
+        </div>
+
+        <!-- Campo para inserir o código de desconto -->
+        <div class="discount-code">
+            <input type="text" id="discountCode" placeholder="Insira o código de desconto">
+            <button onclick="aplicarDesconto()">Aplicar Desconto</button>
+        </div>
+
+        <h3>Formas de Pagamento:</h3>
+        <div class="payment-options">
+            <button onclick="pagarPix()" class="buy-button">Pagar via Pix</button>
+            <button onclick="pagarMercadoPago()" class="buy-button">Pagar via MercadoPago</button>
+        </div>
+    </div>
+
+    <script>
+        // Pegando os parâmetros da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const produto = urlParams.get('produto');
+        const nickname = urlParams.get('nickname');
+        const preco = parseFloat(urlParams.get('preco')); // Preço do produto
+        const imagem = urlParams.get('imagem'); // URL da imagem do produto
+
+        // Variável para controlar o preço com desconto
+        let precoFinal = preco;
+
+        // Atualizando os elementos com as informações da URL
+        document.getElementById('produto').textContent = `Produto: ${produto}`;
+        document.getElementById('nickname').textContent = `Nickname: ${nickname}`;
+        document.getElementById('preco').textContent = `Preço: R$ ${preco.toFixed(2)}`;
+
+        // Definindo a imagem do produto
+        document.getElementById('productImage').src = imagem;
+
+        // Funções de pagamento
+        function pagarPix() {
+            // Redireciona para a página com o QR Code Pix, passando o valor como parâmetro
+            window.location.href = `qrcode-pix.html?valor=${precoFinal.toFixed(2)}`;
+        }
+
+        function pagarMercadoPago() {
+            alert(`Redirecionando para pagamento via MercadoPago... Total: R$ ${precoFinal.toFixed(2)}`);
+        }
+
+        // Função para aplicar o desconto
+        function aplicarDesconto() {
+            const codigo = document.getElementById('discountCode').value.trim().toUpperCase();
+
+            if (codigo === "ABERTURA") {
+                precoFinal = preco * 0.5; // Aplica 50% de desconto
+                document.getElementById('preco').textContent = `Preço com Desconto: R$ ${precoFinal.toFixed(2)}`;
+                alert("Desconto de 50% aplicado com sucesso!");
+            } else {
+                alert("Código inválido. Tente novamente.");
+            }
+        }
+    </script>
+</body>
+</html>
+
