@@ -1,167 +1,288 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Corrida Pisquila</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog Dinâmico</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #111; overflow: hidden; user-select: none; }
-
-    #game {
-      width: 400px;
-      height: 600px;
-      margin: 20px auto;
-      background: #1e1e1e;
-      position: relative;
-      border: 3px solid white;
-      overflow: hidden;
-    }
-
-    #carro {
-      width: 50px;
-      height: 100px;
-      background: #3498db;
-      position: absolute;
-      bottom: 20px;
-      left: 175px;
-      border-radius: 10px;
-    }
-
-    .obstaculo {
-      width: 50px;
-      height: 100px;
-      background: #e74c3c;
-      position: absolute;
-      top: -100px;
-      left: 0;
-      border-radius: 10px;
-    }
-
-    #pontos, #vidas {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      color: white;
+    body {
       font-family: Arial, sans-serif;
-      font-size: 16px;
+      margin: 0;
+      padding: 0;
+      background: 
+        linear-gradient(rgba(0, 200, 200, 0.15), rgba(0, 200, 200, 0.15)),
+        url('https://i.imgur.com/jQ0kSAr.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
     }
 
-    #vidas {
-      left: auto;
-      right: 10px;
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
     }
 
-    /* Botões para celular */
-    .botao {
-      width: 50%;
-      height: 60px;
-      background: rgba(255,255,255,0.05);
-      color: white;
-      font-size: 30px;
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      color: #00ffff;
+      font-size: 2.5rem;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      color: #ccf;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+
+    form input[type="text"],
+    form textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0 15px 0;
       border: none;
-      position: fixed;
-      bottom: 0;
+      border-radius: 4px;
+      font-size: 1rem;
+      background: #eef;
+      color: #000;
     }
 
-    #esquerda {
-      left: 0;
+    form input[type="file"] {
+      margin-bottom: 15px;
+      color: #fff;
     }
 
-    #direita {
-      right: 0;
+    form button {
+      background-color: #00cccc;
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
     }
 
-    @media (min-width: 500px) {
-      .botao { display: none; }
+    form button:hover {
+      background-color: #009999;
+    }
+
+    .post {
+      background: rgba(255, 255, 255, 0.12);
+      padding: 20px;
+      margin-bottom: 25px;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .post h2 {
+      color: #00ffff;
+      margin-top: 0;
+    }
+
+    .post p {
+      line-height: 1.6;
+      color: #ddf;
+    }
+
+    .post img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    .post video {
+      max-width: 100%;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    .post .meta {
+      font-size: 0.9rem;
+      color: #bbf;
+      margin-bottom: 10px;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #ff5555;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      background: #cc0000;
     }
   </style>
 </head>
 <body>
-  <div id="game">
-    <div id="carro"></div>
-    <div id="pontos">Pontos: 0</div>
-    <div id="vidas">Vidas: 3</div>
+
+  <div class="container">
+    <header>
+      <h1>Blog Dinâmico</h1>
+      <p>Crie, visualize e salve suas postagens!</p>
+    </header>
+
+    <form id="postForm">
+      <input type="text" id="title" placeholder="Título da postagem" required />
+      <textarea id="content" placeholder="Escreva o conteúdo da postagem" rows="5" required></textarea>
+
+      <label style="display:block; margin-bottom:5px; color:#ccf;">Imagem (opcional):</label>
+      <input type="file" id="image" accept="image/*" />
+
+      <label style="display:block; margin-top:15px; margin-bottom:5px; color:#ccf;">Vídeo (opcional):</label>
+      <input type="file" id="video" accept="video/*" />
+
+      <button type="submit">Publicar Postagem</button>
+    </form>
+
+    <section id="posts"></section>
   </div>
 
-  <!-- Controles para celular -->
-  <button class="botao" id="esquerda">⏪</button>
-  <button class="botao" id="direita">⏩</button>
-
   <script>
-    const game = document.getElementById('game');
-    const carro = document.getElementById('carro');
-    const pontos = document.getElementById('pontos');
-    const vidasDisplay = document.getElementById('vidas');
-    let posicaoCarro = 175;
-    let score = 0;
-    let vidas = 3;
+    const form = document.getElementById('postForm');
+    const postsContainer = document.getElementById('posts');
 
-    function moverCarro(direcao) {
-      if (direcao === 'esquerda' && posicaoCarro > 0) {
-        posicaoCarro -= 25;
-      } else if (direcao === 'direita' && posicaoCarro < 350) {
-        posicaoCarro += 25;
-      }
-      carro.style.left = posicaoCarro + 'px';
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') moverCarro('esquerda');
-      if (e.key === 'ArrowRight') moverCarro('direita');
+    // Carrega postagens salvas
+    window.addEventListener('load', () => {
+      const savedPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+      savedPosts.forEach(post => renderPost(post));
     });
 
-    // Controles mobile
-    document.getElementById('esquerda').addEventListener('click', () => moverCarro('esquerda'));
-    document.getElementById('direita').addEventListener('click', () => moverCarro('direita'));
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
 
-    function criarObstaculo() {
-      const obstaculo = document.createElement('div');
-      obstaculo.classList.add('obstaculo');
+      const title = document.getElementById('title').value.trim();
+      const content = document.getElementById('content').value.trim();
+      const imageInput = document.getElementById('image');
+      const videoInput = document.getElementById('video');
+      const date = new Date().toLocaleString();
 
-      const left = Math.floor(Math.random() * 8) * 50;
-      obstaculo.style.left = left + 'px';
-      obstaculo.style.background = '#' + Math.floor(Math.random()*16777215).toString(16); // cor aleatória
+      if (!title || !content) {
+        alert('Por favor, preencha título e conteúdo.');
+        return;
+      }
 
-      game.appendChild(obstaculo);
-      let topPos = -100;
+      const post = {
+        id: Date.now(),
+        title,
+        content,
+        date,
+        image: '',
+        video: ''
+      };
 
-      const intervalo = setInterval(() => {
-        topPos += 5;
-        obstaculo.style.top = topPos + 'px';
+      const promises = [];
 
-        const obstaculoX = obstaculo.offsetLeft;
-        const obstaculoY = topPos;
-        const carroX = carro.offsetLeft;
-        const carroY = carro.offsetTop;
+      if (imageInput.files[0]) {
+        const imgPromise = new Promise(resolve => {
+          const reader = new FileReader();
+          reader.onload = e => {
+            post.image = e.target.result;
+            resolve();
+          };
+          reader.readAsDataURL(imageInput.files[0]);
+        });
+        promises.push(imgPromise);
+      }
 
-        const colisao = (
-          obstaculoY + 100 > carroY &&
-          obstaculoY < carroY + 100 &&
-          obstaculoX === carroX
-        );
+      if (videoInput.files[0]) {
+        const vidPromise = new Promise(resolve => {
+          const reader = new FileReader();
+          reader.onload = e => {
+            post.video = e.target.result;
+            resolve();
+          };
+          reader.readAsDataURL(videoInput.files[0]);
+        });
+        promises.push(vidPromise);
+      }
 
-        if (colisao) {
-          vidas--;
-          vidasDisplay.innerText = 'Vidas: ' + vidas;
-          clearInterval(intervalo);
-          obstaculo.remove();
+      Promise.all(promises).then(() => {
+        saveAndRender(post);
+        form.reset();
+      });
+    });
 
-          if (vidas <= 0) {
-            alert('Game Over! Pontuação: ' + score);
-            window.location.reload();
-          }
-
-        } else if (topPos > 600) {
-          clearInterval(intervalo);
-          obstaculo.remove();
-          score++;
-          pontos.innerText = 'Pontos: ' + score;
-        }
-      }, 20);
+    function saveAndRender(post) {
+      const savedPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+      savedPosts.unshift(post);
+      localStorage.setItem('blogPosts', JSON.stringify(savedPosts));
+      renderPost(post, true);
     }
 
-    setInterval(criarObstaculo, 1500);
+    function renderPost(post, prepend = false) {
+      const postDiv = document.createElement('div');
+      postDiv.classList.add('post');
+      postDiv.setAttribute('data-id', post.id);
+
+      const titleEl = document.createElement('h2');
+      titleEl.textContent = post.title;
+
+      const dateEl = document.createElement('div');
+      dateEl.classList.add('meta');
+      dateEl.textContent = `Postado em: ${post.date}`;
+
+      const contentEl = document.createElement('p');
+      contentEl.textContent = post.content;
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Excluir';
+      deleteBtn.classList.add('delete-btn');
+      deleteBtn.onclick = () => deletePost(post.id);
+
+      postDiv.appendChild(deleteBtn);
+      postDiv.appendChild(titleEl);
+      postDiv.appendChild(dateEl);
+      postDiv.appendChild(contentEl);
+
+      if (post.image) {
+        const img = document.createElement('img');
+        img.src = post.image;
+        postDiv.appendChild(img);
+      }
+
+      if (post.video) {
+        const video = document.createElement('video');
+        video.src = post.video;
+        video.controls = true;
+        postDiv.appendChild(video);
+      }
+
+      if (prepend) {
+        postsContainer.prepend(postDiv);
+      } else {
+        postsContainer.appendChild(postDiv);
+      }
+    }
+
+    function deletePost(id) {
+      if (!confirm('Tem certeza que deseja excluir esta postagem?')) return;
+
+      const savedPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+      const updatedPosts = savedPosts.filter(p => p.id !== id);
+      localStorage.setItem('blogPosts', JSON.stringify(updatedPosts));
+
+      const postEl = document.querySelector(`.post[data-id="${id}"]`);
+      if (postEl) postEl.remove();
+    }
   </script>
+
 </body>
 </html>
