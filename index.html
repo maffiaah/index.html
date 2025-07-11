@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loja - Rede Pisquila</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #111;
+      color: #fff;
+      text-align: center;
+    }
+    header {
+      background: #1e1e1e;
+      padding: 20px;
+      font-size: 32px;
+      font-weight: bold;
+      color: #0af;
+    }
+    .vip-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 40px auto;
+      gap: 30px;
+      max-width: 1200px;
+    }
+    .vip-card {
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      width: 250px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      transition: 0.3s;
+    }
+    .vip-card:hover {
+      transform: scale(1.05);
+      background: #2a2a2a;
+    }
+    .vip-title {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .vip-price {
+      font-size: 20px;
+      color: #0af;
+      margin-bottom: 15px;
+    }
+    .vip-desc {
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .buy-button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background: #0af;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .buy-button:hover {
+      background: #08c;
+    }
+    footer {
+      background: #1e1e1e;
+      padding: 15px;
+      font-size: 14px;
+      color: #888;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<header>🛒 Loja - Rede Pisquila</header>
+
+<section class="vip-container">
+  <div class="vip-card">
+    <div class="vip-title">VIP Bronze</div>
+    <div class="vip-price">R$ 10,00</div>
+    <div class="vip-desc">Acesso básico ao servidor<br>Prefixo VIP, /kit bronze, /home extra</div>
+    <button class="buy-button">Comprar</button>
+  </div>
+
+  <div class="vip-card">
+    <div class="vip-title">VIP Prata</div>
+    <div class="vip-price">R$ 20,00</div>
+    <div class="vip-desc">Recursos avançados<br>Prefixo especial, /kit prata, 3 homes</div>
+    <button class="buy-button">Comprar</button>
+  </div>
+
+  <div class="vip-card">
+    <div class="vip-title">VIP Ouro</div>
+    <div class="vip-price">R$ 40,00</div>
+    <div class="vip-desc">Todos os benefícios VIP<br>Prefixo lendário, /kit ouro, 5 homes</div>
+    <button class="buy-button">Comprar</button>
+  </div>
+</section>
+
+<footer>
+  © 2025 Rede Pisquila - Todos os direitos reservados.
+</footer>
+
+</body>
+</html>
