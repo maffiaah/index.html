@@ -1,108 +1,167 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loja - Rede Pisquila</title>
+  <meta charset="UTF-8">
+  <title>Corrida Pisquila</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #111;
-      color: #fff;
-      text-align: center;
-    }
-    header {
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #111; overflow: hidden; user-select: none; }
+
+    #game {
+      width: 400px;
+      height: 600px;
+      margin: 20px auto;
       background: #1e1e1e;
-      padding: 20px;
-      font-size: 32px;
-      font-weight: bold;
-      color: #0af;
+      position: relative;
+      border: 3px solid white;
+      overflow: hidden;
     }
-    .vip-container {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin: 40px auto;
-      gap: 30px;
-      max-width: 1200px;
-    }
-    .vip-card {
-      background: #222;
-      padding: 20px;
+
+    #carro {
+      width: 50px;
+      height: 100px;
+      background: #3498db;
+      position: absolute;
+      bottom: 20px;
+      left: 175px;
       border-radius: 10px;
-      width: 250px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
-      transition: 0.3s;
     }
-    .vip-card:hover {
-      transform: scale(1.05);
-      background: #2a2a2a;
+
+    .obstaculo {
+      width: 50px;
+      height: 100px;
+      background: #e74c3c;
+      position: absolute;
+      top: -100px;
+      left: 0;
+      border-radius: 10px;
     }
-    .vip-title {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-    .vip-price {
-      font-size: 20px;
-      color: #0af;
-      margin-bottom: 15px;
-    }
-    .vip-desc {
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
-    .buy-button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      background: #0af;
+
+    #pontos, #vidas {
+      position: absolute;
+      top: 10px;
+      left: 10px;
       color: white;
-      font-weight: bold;
-      cursor: pointer;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
     }
-    .buy-button:hover {
-      background: #08c;
+
+    #vidas {
+      left: auto;
+      right: 10px;
     }
-    footer {
-      background: #1e1e1e;
-      padding: 15px;
-      font-size: 14px;
-      color: #888;
-      margin-top: 40px;
+
+    /* Botões para celular */
+    .botao {
+      width: 50%;
+      height: 60px;
+      background: rgba(255,255,255,0.05);
+      color: white;
+      font-size: 30px;
+      border: none;
+      position: fixed;
+      bottom: 0;
+    }
+
+    #esquerda {
+      left: 0;
+    }
+
+    #direita {
+      right: 0;
+    }
+
+    @media (min-width: 500px) {
+      .botao { display: none; }
     }
   </style>
 </head>
 <body>
-
-<header>🛒 Loja - Rede Pisquila</header>
-
-<section class="vip-container">
-  <div class="vip-card">
-    <div class="vip-title">VIP Bronze</div>
-    <div class="vip-price">R$ 10,00</div>
-    <div class="vip-desc">Acesso básico ao servidor<br>Prefixo VIP, /kit bronze, /home extra</div>
-    <button class="buy-button">Comprar</button>
+  <div id="game">
+    <div id="carro"></div>
+    <div id="pontos">Pontos: 0</div>
+    <div id="vidas">Vidas: 3</div>
   </div>
 
-  <div class="vip-card">
-    <div class="vip-title">VIP Prata</div>
-    <div class="vip-price">R$ 20,00</div>
-    <div class="vip-desc">Recursos avançados<br>Prefixo especial, /kit prata, 3 homes</div>
-    <button class="buy-button">Comprar</button>
-  </div>
+  <!-- Controles para celular -->
+  <button class="botao" id="esquerda">⏪</button>
+  <button class="botao" id="direita">⏩</button>
 
-  <div class="vip-card">
-    <div class="vip-title">VIP Ouro</div>
-    <div class="vip-price">R$ 40,00</div>
-    <div class="vip-desc">Todos os benefícios VIP<br>Prefixo lendário, /kit ouro, 5 homes</div>
-    <button class="buy-button">Comprar</button>
-  </div>
-</section>
+  <script>
+    const game = document.getElementById('game');
+    const carro = document.getElementById('carro');
+    const pontos = document.getElementById('pontos');
+    const vidasDisplay = document.getElementById('vidas');
+    let posicaoCarro = 175;
+    let score = 0;
+    let vidas = 3;
 
-<footer>
-  © 2025 Rede Pisquila - Todos os direitos reservados.
-</footer>
+    function moverCarro(direcao) {
+      if (direcao === 'esquerda' && posicaoCarro > 0) {
+        posicaoCarro -= 25;
+      } else if (direcao === 'direita' && posicaoCarro < 350) {
+        posicaoCarro += 25;
+      }
+      carro.style.left = posicaoCarro + 'px';
+    }
 
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') moverCarro('esquerda');
+      if (e.key === 'ArrowRight') moverCarro('direita');
+    });
+
+    // Controles mobile
+    document.getElementById('esquerda').addEventListener('click', () => moverCarro('esquerda'));
+    document.getElementById('direita').addEventListener('click', () => moverCarro('direita'));
+
+    function criarObstaculo() {
+      const obstaculo = document.createElement('div');
+      obstaculo.classList.add('obstaculo');
+
+      const left = Math.floor(Math.random() * 8) * 50;
+      obstaculo.style.left = left + 'px';
+      obstaculo.style.background = '#' + Math.floor(Math.random()*16777215).toString(16); // cor aleatória
+
+      game.appendChild(obstaculo);
+      let topPos = -100;
+
+      const intervalo = setInterval(() => {
+        topPos += 5;
+        obstaculo.style.top = topPos + 'px';
+
+        const obstaculoX = obstaculo.offsetLeft;
+        const obstaculoY = topPos;
+        const carroX = carro.offsetLeft;
+        const carroY = carro.offsetTop;
+
+        const colisao = (
+          obstaculoY + 100 > carroY &&
+          obstaculoY < carroY + 100 &&
+          obstaculoX === carroX
+        );
+
+        if (colisao) {
+          vidas--;
+          vidasDisplay.innerText = 'Vidas: ' + vidas;
+          clearInterval(intervalo);
+          obstaculo.remove();
+
+          if (vidas <= 0) {
+            alert('Game Over! Pontuação: ' + score);
+            window.location.reload();
+          }
+
+        } else if (topPos > 600) {
+          clearInterval(intervalo);
+          obstaculo.remove();
+          score++;
+          pontos.innerText = 'Pontos: ' + score;
+        }
+      }, 20);
+    }
+
+    setInterval(criarObstaculo, 1500);
+  </script>
 </body>
 </html>
