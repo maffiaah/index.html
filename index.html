@@ -1,239 +1,217 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loja VIP - Minecraft</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #00bcd4;
-            color: white;
-            text-align: center;
-            padding: 0;
-            margin: 0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Loja VIP - Minecraft</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #00bcd4;
+      color: white;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+    }
 
-        nav .logo img {
-            width: 300px;
-            max-width: 90%;
-            margin-top: 20px;
-        }
+    nav .logo img {
+      width: 300px;
+      max-width: 90%;
+      margin-top: 20px;
+    }
 
-        .vip-card {
-            display: inline-block;
-            width: 250px;
-            background-color: #333;
-            padding: 15px;
-            margin: 15px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            vertical-align: top;
-        }
+    .vip-card {
+      display: inline-block;
+      width: 250px;
+      background-color: #333;
+      padding: 15px;
+      margin: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      vertical-align: top;
+    }
 
-        .vip-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-        }
+    .vip-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
 
-        .vip-card img {
-            width: 100%;
-            border-radius: 10px;
-        }
+    .vip-card img {
+      width: 100%;
+      border-radius: 10px;
+    }
 
-        .leviathan-img {
-            transform: scale(1.1);
-            transition: transform 0.3s ease;
-        }
+    .leviathan-img {
+      transform: scale(1.1);
+      transition: transform 0.3s ease;
+    }
 
-        .buy-button, .desc-button {
-            display: inline-block;
-            padding: 10px 15px;
-            margin-top: 10px;
-            background-color: #ffcc00;
-            color: #222;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: 0.3s;
-            cursor: pointer;
-        }
+    .buy-button, .desc-button {
+      display: inline-block;
+      padding: 10px 15px;
+      margin-top: 10px;
+      background-color: #ffcc00;
+      color: #222;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: 0.3s;
+      cursor: pointer;
+    }
 
-        .desc-button {
-            background-color: #007BFF;
-            color: white;
-        }
+    .desc-button {
+      background-color: #007BFF;
+      color: white;
+    }
 
-        .buy-button:hover {
-            background-color: #ff9900;
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
-        }
+    .buy-button:hover {
+      background-color: #ff9900;
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+    }
 
-        .desc-button:hover {
-            background-color: #0056b3;
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
+    .desc-button:hover {
+      background-color: #0056b3;
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
 
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            text-align: center;
-            padding-top: 100px;
-        }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.8);
+      text-align: center;
+      padding-top: 100px;
+    }
 
-        .modal-content {
-            background-color: #333;
-            color: white;
-            margin: auto;
-            padding: 20px;
-            border-radius: 10px;
-            width: 50%;
-        }
+    .modal-content {
+      background-color: #333;
+      color: white;
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 50%;
+    }
 
-        .close {
-            color: #ffcc00;
-            float: right;
-            font-size: 28px;
-            cursor: pointer;
-        }
+    .close {
+      color: #ffcc00;
+      float: right;
+      font-size: 28px;
+      cursor: pointer;
+    }
 
-        .vip-desc {
-            color: yellow;
-        }
+    .vip-desc { color: yellow; }
+    .vip-plus-desc { color: yellow; }
+    .vip-plus-desc .plus { color: cyan; }
+    .mvp-desc { color: cyan; }
+    .mvp-plus-desc { color: cyan; }
+    .mvp-plus-desc .plus { color: yellow; }
+    .leviathan-desc { color: cyan; }
 
-        .vip-plus-desc {
-            color: yellow;
-        }
+    @media (max-width: 768px) {
+      .vip-card {
+        width: 90%;
+        margin: 10px auto;
+        display: block;
+      }
 
-        .vip-plus-desc .plus {
-            color: cyan;
-        }
+      .modal-content {
+        width: 90%;
+      }
 
-        .mvp-desc {
-            color: cyan;
-        }
+      nav .logo img {
+        width: 80%;
+        max-width: 300px;
+      }
 
-        .mvp-plus-desc {
-            color: cyan;
-        }
-
-        .mvp-plus-desc .plus {
-            color: yellow;
-        }
-
-        .leviathan-desc {
-            color: cyan;
-        }
-
-        /* Responsivo para celular */
-        @media (max-width: 768px) {
-            .vip-card {
-                width: 90%;
-                margin: 10px auto;
-                display: block;
-            }
-
-            .modal-content {
-                width: 90%;
-            }
-
-            nav .logo img {
-                width: 80%;
-                max-width: 300px;
-            }
-
-            body {
-                padding: 10px;
-            }
-        }
-    </style>
+      body {
+        padding: 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <nav>
-        <div class="logo">
-            <img src="https://i.imgur.com/Kub9rzq.png" alt="Logo">
-        </div>
-    </nav>
 
-    <div id="vipModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2 id="modal-title"></h2>
-            <p id="modal-text"></p>
-        </div>
+  <nav>
+    <div class="logo">
+      <img src="https://i.imgur.com/Kub9rzq.png" alt="Logo">
     </div>
+  </nav>
 
-    <div class="vip-card">
-        <img src="https://i.imgur.com/cmxOKk0.jpeg" alt="VIP">
-        <h3>VIP</h3>
-        <p>R$ 20,00</p>
-        <a href="nickname.html" class="buy-button">Comprar</a>
-        <button class="desc-button" onclick="showDesc('VIP', 
-        'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 5 homes\nAcesso a 2 terrenos\nAcesso a Mina VIP\nBônus de mineração de 5%\nBônus de máquinas de 5%\nDesconto de 5% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit VIP Diário\nAcesso ao Kit VIP Semanal\nAcesso ao /megafone', 'vip-desc')">Descrição</button>
+  <!-- Modal de descrição -->
+  <div id="vipModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modal-title"></h2>
+      <p id="modal-text"></p>
     </div>
+  </div>
 
-    <div class="vip-card">
-        <img src="https://i.imgur.com/mj5Lopx.jpeg" alt="VIP+">
-        <h3>VIP+<span class="plus">+</span></h3>
-        <p>R$ 30,00</p>
-        <a href="nickname.html" class="buy-button">Comprar</a>
-        <button class="desc-button" onclick="showDesc('VIP+', 
-        'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 7 homes\nAcesso a 3 terrenos\nAcesso a Mina VIP\nBônus de mineração de 8%\nBônus de máquinas de 8%\nDesconto de 8% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit VIP+ Diário\nAcesso ao Kit VIP+ Semanal\nAcesso ao /megafone', 'vip-plus-desc')">Descrição</button>
-    </div>
+  <!-- VIPs -->
+  <div class="vip-card">
+    <img src="https://i.imgur.com/cmxOKk0.jpeg" alt="VIP">
+    <h3>VIP</h3>
+    <p>R$ 20,00</p>
+    <a href="nickname.html?produto=VIP&preco=20.00&imagem=https://i.imgur.com/cmxOKk0.jpeg" class="buy-button">Comprar</a>
+    <button class="desc-button" onclick="showDesc('VIP', 'Acesso à utilização de cores nos chats...\n5 homes, 2 terrenos, /fly, Kit Diário, etc.', 'vip-desc')">Descrição</button>
+  </div>
 
-    <div class="vip-card">
-        <img src="https://i.imgur.com/HnHOmox.jpeg" alt="MVP">
-        <h3>MVP</h3>
-        <p>R$ 50,00</p>
-        <a href="nickname.html" class="buy-button">Comprar</a>
-        <button class="desc-button" onclick="showDesc('MVP',
-        'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 9 homes\nAcesso a 4 terrenos\nAcesso a Mina VIP\nBônus de mineração de 12%\nBônus de máquinas de 12%\nDesconto de 12% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit MVP Diário\nAcesso ao Kit MVP Semanal\nAcesso ao /megafone', 'mvp-desc')">Descrição</button>
-    </div>
+  <div class="vip-card">
+    <img src="https://i.imgur.com/mj5Lopx.jpeg" alt="VIP+">
+    <h3>VIP+<span class="plus">+</span></h3>
+    <p>R$ 30,00</p>
+    <a href="nickname.html?produto=VIP+&preco=30.00&imagem=https://i.imgur.com/mj5Lopx.jpeg" class="buy-button">Comprar</a>
+    <button class="desc-button" onclick="showDesc('VIP+', 'Acesso à Mina VIP, 7 homes, bônus 8%, Kit VIP+ Diário e mais.', 'vip-plus-desc')">Descrição</button>
+  </div>
 
-    <div class="vip-card">
-        <img src="https://i.imgur.com/4MrhVSi.jpeg" alt="MVP+">
-        <h3>MVP+<span class="plus">+</span></h3>
-        <p>R$ 75,00</p>
-        <a href="nickname.html" class="buy-button">Comprar</a>
-        <button class="desc-button" onclick="showDesc('MVP+', 
-        'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 11 homes\nAcesso a 5 terrenos\nAcesso a Mina VIP\nBônus de mineração de 15%\nBônus de máquinas de 15%\nDesconto de 15% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit MVP+ Diário\nAcesso ao Kit MVP+ Semanal\nAcesso ao /megafone', 'mvp-plus-desc')">Descrição</button>
-    </div>
+  <div class="vip-card">
+    <img src="https://i.imgur.com/HnHOmox.jpeg" alt="MVP">
+    <h3>MVP</h3>
+    <p>R$ 50,00</p>
+    <a href="nickname.html?produto=MVP&preco=50.00&imagem=https://i.imgur.com/HnHOmox.jpeg" class="buy-button">Comprar</a>
+    <button class="desc-button" onclick="showDesc('MVP', '9 homes, bônus 12%, Kit MVP Diário, /fly, /megafone, etc.', 'mvp-desc')">Descrição</button>
+  </div>
 
-    <div class="vip-card">
-        <img src="https://i.imgur.com/sogicRh.jpeg" alt="LEVIATHAN" class="leviathan-img">
-        <h3>LEVIATHAN</h3>
-        <p>R$ 200,00</p>
-        <a href="nickname.html" class="buy-button">Comprar</a>
-        <button class="desc-button" onclick="showDesc('LEVIATHAN', 
-        'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 20 homes\nAcesso a 7 terrenos\nAcesso a Mina VIP\nBônus de mineração de 25%\nBônus de máquinas de 25%\nDesconto de 25% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit LEVIATHAN Diário\nAcesso ao Kit LEVIATHAN Semanal\nAcesso ao /megafone', 'leviathan-desc')">Descrição</button>
-    </div>
+  <div class="vip-card">
+    <img src="https://i.imgur.com/4MrhVSi.jpeg" alt="MVP+">
+    <h3>MVP+<span class="plus">+</span></h3>
+    <p>R$ 75,00</p>
+    <a href="nickname.html?produto=MVP+&preco=75.00&imagem=https://i.imgur.com/4MrhVSi.jpeg" class="buy-button">Comprar</a>
+    <button class="desc-button" onclick="showDesc('MVP+', '11 homes, 5 terrenos, bônus 15%, Kit MVP+ Semanal.', 'mvp-plus-desc')">Descrição</button>
+  </div>
 
-    <script>
-        function showDesc(title, text, descClass) {
-            document.getElementById('modal-title').innerText = title;
-            document.getElementById('modal-text').innerText = text;
-            document.getElementById('modal-text').className = descClass;
-            document.getElementById('vipModal').style.display = 'block';
-        }
+  <div class="vip-card">
+    <img src="https://i.imgur.com/sogicRh.jpeg" alt="LEVIATHAN" class="leviathan-img">
+    <h3>LEVIATHAN</h3>
+    <p>R$ 200,00</p>
+    <a href="nickname.html?produto=LEVIATHAN&preco=200.00&imagem=https://i.imgur.com/sogicRh.jpeg" class="buy-button">Comprar</a>
+    <button class="desc-button" onclick="showDesc('LEVIATHAN', '20 homes, 7 terrenos, bônus 25%, acesso total, etc.', 'leviathan-desc')">Descrição</button>
+  </div>
 
-        function closeModal() {
-            document.getElementById('vipModal').style.display = 'none';
-        }
+  <script>
+    function showDesc(title, text, descClass) {
+      document.getElementById('modal-title').innerText = title;
+      document.getElementById('modal-text').innerText = text;
+      document.getElementById('modal-text').className = descClass;
+      document.getElementById('vipModal').style.display = 'block';
+    }
 
-        window.onclick = function(event) {
-            if (event.target === document.getElementById('vipModal')) {
-                closeModal();
-            }
-        }
-    </script>
+    function closeModal() {
+      document.getElementById('vipModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      if (event.target === document.getElementById('vipModal')) {
+        closeModal();
+      }
+    }
+  </script>
+
 </body>
 </html>
