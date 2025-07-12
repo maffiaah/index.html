@@ -10,7 +10,16 @@
             background-color: #00bcd4;
             color: white;
             text-align: center;
+            padding: 0;
+            margin: 0;
         }
+
+        nav .logo img {
+            width: 300px;
+            max-width: 90%;
+            margin-top: 20px;
+        }
+
         .vip-card {
             display: inline-block;
             width: 250px;
@@ -22,14 +31,17 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             vertical-align: top;
         }
+
         .vip-card:hover {
             transform: scale(1.05);
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
         }
+
         .vip-card img {
             width: 100%;
             border-radius: 10px;
         }
+
         .buy-button, .desc-button {
             display: inline-block;
             padding: 10px 15px;
@@ -42,25 +54,24 @@
             transition: 0.3s;
             cursor: pointer;
         }
+
         .desc-button {
             background-color: #007BFF;
             color: white;
         }
-        
-        /* Animação para o botão de compra */
+
         .buy-button:hover {
             background-color: #ff9900;
             transform: translateY(-5px);
             box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
         }
-        
-        /* Animação para o botão de descrição */
+
         .desc-button:hover {
             background-color: #0056b3;
             transform: translateY(-5px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
-        
+
         .modal {
             display: none;
             position: fixed;
@@ -73,6 +84,7 @@
             text-align: center;
             padding-top: 100px;
         }
+
         .modal-content {
             background-color: #333;
             color: white;
@@ -81,6 +93,7 @@
             border-radius: 10px;
             width: 50%;
         }
+
         .close {
             color: #ffcc00;
             float: right;
@@ -88,32 +101,58 @@
             cursor: pointer;
         }
 
-        /* Definindo as cores específicas para cada VIP */
         .vip-desc {
-            color: yellow; /* Padrão para VIP */
+            color: yellow;
         }
+
         .vip-plus-desc {
-            color: yellow; /* Padrão para VIP+ */
+            color: yellow;
         }
+
         .vip-plus-desc .plus {
-            color: cyan; /* Cor do "+" em VIP */
+            color: cyan;
         }
+
         .mvp-desc {
-            color: cyan; /* Padrão para MVP */
+            color: cyan;
         }
+
         .mvp-plus-desc {
-            color: cyan; /* Padrão para MVP+ */
+            color: cyan;
         }
+
         .mvp-plus-desc .plus {
-            color: yellow; /* Cor do "+" em MVP */
+            color: yellow;
         }
+
         .leviathan-desc {
-            color: cyan; /* Padrão para LEVIATHAN */
+            color: cyan;
+        }
+
+        /* Responsivo para celular */
+        @media (max-width: 768px) {
+            .vip-card {
+                width: 90%;
+                margin: 10px auto;
+                display: block;
+            }
+
+            .modal-content {
+                width: 90%;
+            }
+
+            nav .logo img {
+                width: 80%;
+                max-width: 300px;
+            }
+
+            body {
+                padding: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Menu de Navegação -->
     <nav>
         <div class="logo">
             <img src="https://i.imgur.com/Kub9rzq.png" alt="Logo">
@@ -136,41 +175,41 @@
         <button class="desc-button" onclick="showDesc('VIP', 
         'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 5 homes\nAcesso a 2 terrenos\nAcesso a Mina VIP\nBônus de mineração de 5%\nBônus de máquinas de 5%\nDesconto de 5% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit VIP Diário\nAcesso ao Kit VIP Semanal\nAcesso ao /megafone', 'vip-desc')">Descrição</button>
     </div>
-    
+
     <div class="vip-card">
         <img src="https://i.imgur.com/mj5Lopx.jpeg" alt="VIP+">
         <h3>VIP+<span class="plus">+</span></h3>
         <p>R$ 30,00</p>
         <a href="nickname.html" class="buy-button">Comprar</a>
         <button class="desc-button" onclick="showDesc('VIP+', 
-		'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 7 homes\nAcesso a 3 terrenos\nAcesso a Mina VIP\nBônus de mineração de 8%\nBônus de máquinas de 8%\nDesconto de 8% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit VIP+ Diário\nAcesso ao Kit VIP+ Semanal\nAcesso ao /megafone', 'vip-plus-desc')">Descrição</button>
+        'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 7 homes\nAcesso a 3 terrenos\nAcesso a Mina VIP\nBônus de mineração de 8%\nBônus de máquinas de 8%\nDesconto de 8% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit VIP+ Diário\nAcesso ao Kit VIP+ Semanal\nAcesso ao /megafone', 'vip-plus-desc')">Descrição</button>
     </div>
-    
+
     <div class="vip-card">
         <img src="https://i.imgur.com/HnHOmox.jpeg" alt="MVP">
         <h3>MVP</h3>
         <p>R$ 50,00</p>
         <a href="nickname.html" class="buy-button">Comprar</a>
         <button class="desc-button" onclick="showDesc('MVP',
-		'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 9 homes\nAcesso a 4 terrenos\nAcesso a Mina VIP\nBônus de mineração de 12%\nBônus de máquinas de 12%\nDesconto de 12% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit MVP Diário\nAcesso ao Kit MVP Semanal\nAcesso ao /megafone', 'mvp-desc')">Descrição</button>
+        'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 9 homes\nAcesso a 4 terrenos\nAcesso a Mina VIP\nBônus de mineração de 12%\nBônus de máquinas de 12%\nDesconto de 12% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit MVP Diário\nAcesso ao Kit MVP Semanal\nAcesso ao /megafone', 'mvp-desc')">Descrição</button>
     </div>
-    
+
     <div class="vip-card">
         <img src="https://i.imgur.com/4MrhVSi.jpeg" alt="MVP+">
         <h3>MVP+<span class="plus">+</span></h3>
         <p>R$ 75,00</p>
         <a href="nickname.html" class="buy-button">Comprar</a>
         <button class="desc-button" onclick="showDesc('MVP+', 
-		'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 11 homes\nAcesso a 5 terrenos\nAcesso a Mina VIP\nBônus de mineração de 15%\nBônus de máquinas de 15%\nDesconto de 15% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit MVP+ Diário\nAcesso ao Kit MVP+ Semanal\nAcesso ao /megafone', 'mvp-plus-desc')">Descrição</button>
+        'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 11 homes\nAcesso a 5 terrenos\nAcesso a Mina VIP\nBônus de mineração de 15%\nBônus de máquinas de 15%\nDesconto de 15% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit MVP+ Diário\nAcesso ao Kit MVP+ Semanal\nAcesso ao /megafone', 'mvp-plus-desc')">Descrição</button>
     </div>
-    
+
     <div class="vip-card">
         <img src="https://i.imgur.com/sogicRh.jpeg" alt="LEVIATHAN">
         <h3>LEVIATHAN</h3>
         <p>R$ 200,00</p>
         <a href="nickname.html" class="buy-button">Comprar</a>
         <button class="desc-button" onclick="showDesc('LEVIATHAN', 
-		'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 20 homes\nAcesso a 7 terrenos\nAcesso a Mina VIP\nBônus de mineração de 25%\nBônus de máquinas de 25%\nDesconto de 25% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit LEVIATHAN Diário\nAcesso ao Kit LEVIATHAN Semanal\nAcesso ao /megafone', 'leviathan-desc')">Descrição</button>
+        'Fique por dentro das vantagens do seu VIP que você adquiriu.\n\nAcesso à utilização de cores nos chats do RankUP Overpower\nAcesso ao [item], que mostra o item que você tem na mão no chat\nAcesso a 20 homes\nAcesso a 7 terrenos\nAcesso a Mina VIP\nBônus de mineração de 25%\nBônus de máquinas de 25%\nDesconto de 25% na compra de máquinas\nAcesso ao comando /fly\nAcesso ao Kit LEVIATHAN Diário\nAcesso ao Kit LEVIATHAN Semanal\nAcesso ao /megafone', 'leviathan-desc')">Descrição</button>
     </div>
 
     <script>
