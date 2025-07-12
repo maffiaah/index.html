@@ -97,15 +97,20 @@
 
     <script>
         function irParaCarrinho() {
-            const nickname = document.getElementById('nickname').value;
+            const nickname = document.getElementById('nickname').value.trim();
             const urlParams = new URLSearchParams(window.location.search);
             const produto = urlParams.get('produto');
             const preco = urlParams.get('preco');
-            const imagem = urlParams.get('imagem'); // Pega a URL da imagem
+            const imagem = urlParams.get('imagem');
+
+            if (!produto || !preco || !imagem) {
+                alert("Erro: informações do produto não encontradas.");
+                return;
+            }
 
             if (nickname) {
-                // Redirecionando para carrinho.html com os parâmetros adicionais
-                window.location.href = `carrinho.html?produto=${produto}&preco=${preco}&nickname=${nickname}&imagem=${imagem}`;
+                const url = `carrinho.html?produto=${encodeURIComponent(produto)}&preco=${encodeURIComponent(preco)}&nickname=${encodeURIComponent(nickname)}&imagem=${encodeURIComponent(imagem)}`;
+                window.location.href = url;
             } else {
                 alert("Por favor, insira seu nickname!");
             }
