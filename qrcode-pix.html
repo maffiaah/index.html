@@ -78,17 +78,23 @@
         <a href="index.html" class="back-button">Voltar ao Início</a>
     </div>
 
-    <!-- Script para gerar o QR Code -->
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <!-- Biblioteca QRCodeJS atualizada -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const valorParam = urlParams.get('valor');
         const valor = parseFloat(valorParam);
 
-        if (!isNaN(valor)) {
+        if (!isNaN(valor) && valor > 0) {
             document.getElementById('valor').textContent = `R$ ${valor.toFixed(2)}`;
 
-            const codigoPix = `00020126430014BR.GOV.BCB.PIX0121maffioletii@gmail.com520400005303986540${valor.toFixed(2)}5802BR5923Igor Felipe Maffioletti6009SAO PAULO61080540900062250521y5sbifp7GloQ5t7bqb1am6304E30F`;
+            // Geração simples do código Pix (pode ser expandido com CRC e campos oficiais)
+            const chavePix = "maffioletii@gmail.com";
+            const nome = "Igor Felipe Maffioletti";
+            const cidade = "SAO PAULO";
+            const identificador = "y5sbifp7GloQ5t7bqb1am"; // pode ser aleatório ou fixo
+
+            const codigoPix = `00020126430014BR.GOV.BCB.PIX0121${chavePix}520400005303986540${valor.toFixed(2)}5802BR5923${nome}6009${cidade}61080540900062250521${identificador}6304E30F`;
 
             new QRCode(document.getElementById("qrcode"), {
                 text: codigoPix,
@@ -96,7 +102,7 @@
                 height: 256,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.L
+                correctLevel: QRCode.CorrectLevel.H
             });
         } else {
             document.getElementById('valor').textContent = 'Valor inválido';
