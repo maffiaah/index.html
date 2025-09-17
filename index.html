@@ -1,715 +1,127 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rede Leviathan - Servidor Minecraft Premium</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #1abc9c;
-            --dark: #1a252f;
-            --light: #ecf0f1;
-            --accent: #e74c3c;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Minecraft', Arial, sans-serif;
-        }
-        
-        @font-face {
-            font-family: 'Minecraft';
-            src: url('https://fonts.cdnfonts.com/css/minecraft-4') format('woff');
-        }
-        
-        body {
-            background-color: #f8f9fa;
-            color: var(--dark);
-        }
-        
-        header {
-            background-color: rgba(26, 37, 47, 0.9);
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-        
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .logo img {
-            height: 50px;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-        
-        .nav-links a {
-            color: var(--light);
-            text-decoration: none;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-        }
-        
-        .nav-links a:hover {
-            background-color: var(--secondary);
-            color: var(--dark);
-            transform: translateY(-3px);
-        }
-        
-        .mobile-menu {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            text-align: center;
-            padding-top: 80px;
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .hero-content h2 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, #1abc9c, #3498db);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        
-        .hero-content p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            color: var(--dark);
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 2rem;
-            background-color: var(--secondary);
-            color: var(--dark);
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 1.1rem;
-            margin: 0.5rem;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--secondary);
-            color: var(--secondary);
-        }
-        
-        .btn-outline:hover {
-            background-color: var(--secondary);
-            color: var(--dark);
-        }
-        
-        section {
-            padding: 5rem 0;
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-            font-size: 2.5rem;
-            color: var(--secondary);
-        }
-        
-        .about-content {
-            display: flex;
-            align-items: center;
-            gap: 3rem;
-        }
-        
-        .about-text {
-            flex: 1;
-        }
-        
-        .about-image {
-            flex: 1;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-        
-        .about-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        
-        .ranks {
-            background-color: rgba(26, 37, 47, 0.8);
-        }
-        
-        .rank-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-        
-        .rank-card {
-            background-color: rgba(44, 62, 80, 0.8);
-            border-radius: 8px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            border-top: 4px solid var(--secondary);
-        }
-        
-        .rank-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
-        
-        .rank-card.vip { border-top-color: #2ecc71; }
-        .rank-card.vip-plus { border-top-color: #f1c40f; }
-        .rank-card.mvp { border-top-color: #9b59b6; }
-        .rank-card.mvp-plus { border-top-color: #e74c3c; }
-        .rank-card.leviathan { border-top-color: #3498db; }
-        
-        .rank-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .vip .rank-icon { color: #2ecc71; }
-        .vip-plus .rank-icon { color: #f1c40f; }
-        .mvp .rank-icon { color: #9b59b6; }
-        .mvp-plus .rank-icon { color: #e74c3c; }
-        .leviathan .rank-icon { color: #3498db; }
-        
-        .rank-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-        
-        .rank-card .price {
-            font-size: 1.5rem;
-            margin: 1rem 0;
-            color: var(--secondary);
-        }
-        
-        .features {
-            background-color: rgba(26, 37, 47, 0.8);
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .feature-card {
-            background-color: rgba(44, 62, 80, 0.8);
-            padding: 2rem;
-            border-radius: 8px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--secondary);
-            margin-bottom: 1rem;
-        }
-        
-        .contact {
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .contact-form {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: rgba(44, 62, 80, 0.8);
-            padding: 2rem;
-            border-radius: 8px;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-            text-align: left;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
-        }
-        
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 0.8rem;
-            border-radius: 4px;
-            border: none;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: var(--light);
-        }
-        
-        footer {
-            background-color: var(--dark);
-            padding: 2rem 0;
-            text-align: center;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .social-links a {
-            color: var(--light);
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-        }
-        
-        .social-links a:hover {
-            color: var(--secondary);
-            transform: translateY(-3px);
-        }
-        
-        .server-ip {
-            background-color: var(--primary);
-            padding: 1rem;
-            border-radius: 4px;
-            display: inline-block;
-            margin: 1rem 0;
-            font-family: monospace;
-            font-size: 1.2rem;
-        }
-        
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 80px;
-                left: 0;
-                width: 100%;
-                background-color: var(--dark);
-                padding: 1rem 0;
-                gap: 0;
-            }
-            
-            .nav-links.active {
-                display: flex;
-            }
-            
-            .nav-links a {
-                padding: 1rem 2rem;
-                border-radius: 0;
-            }
-            
-            .mobile-menu {
-                display: block;
-            }
-            
-            .about-content {
-                flex-direction: column;
-            }
-            
-            .hero-content h2 {
-                font-size: 2.5rem;
-            }
-        }
-        
-        /* Animações */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .floating {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        /* Efeito de digitação */
-        .typing-effect {
-            border-right: 3px solid var(--secondary);
-            white-space: nowrap;
-            overflow: hidden;
-            display: inline-block;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Placar de Sinuca</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0b3d0b;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    .placar {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .jogador {
+      background: #145214;
+      padding: 20px;
+      border-radius: 10px;
+      width: 40%;
+      margin: 10px;
+      min-width: 200px;
+    }
+    input {
+      padding: 8px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      width: 80%;
+      border: none;
+      border-radius: 5px;
+      text-align: center;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #ffcc00;
+      color: #000;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #e6b800;
+    }
+    .vitorias {
+      font-size: 22px;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">
-                    <img src="https://i.imgur.com/4c6KQme.png" alt="Leviathan Logo" class="floating">
-                </div>
-                
-                <div class="nav-links" id="navLinks">
-                    <a href="#home">Início</a>
-                    <a href="#about">Sobre</a>
-                    <a href="#ranks">Ranks</a>
-                    <a href="#features">Recursos</a>
-                    <a href="#contact">Contato</a>
-                    <a href="#store" class="btn btn-outline">Loja</a>
-                </div>
-                
-                <div class="mobile-menu" id="mobileMenu">
-                    <i class="fas fa-bars"></i>
-                </div>
-            </nav>
-        </div>
-    </header>
+  <h1>🏆 Placar de Sinuca</h1>
+  <div class="placar">
+    <div class="jogador">
+      <input id="nome1" type="text" placeholder="Nome do Jogador 1">
+      <div class="vitorias" id="vitorias1">Vitórias: 0</div>
+      <button onclick="adicionarVitoria(1)">+1 Vitória</button>
+      <button onclick="resetar(1)">Resetar</button>
+    </div>
+    <div class="jogador">
+      <input id="nome2" type="text" placeholder="Nome do Jogador 2">
+      <div class="vitorias" id="vitorias2">Vitórias: 0</div>
+      <button onclick="adicionarVitoria(2)">+1 Vitória</button>
+      <button onclick="resetar(2)">Resetar</button>
+    </div>
+  </div>
 
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <h2>Bem-vindo à Rede Leviathan</h2>
-                <p class="typing-effect">O servidor de Minecraft mais completo e divertido da atualidade! Jogue agora e experimente uma nova forma de diversão com seus amigos.</p>
-                <div>
-                    <a href="#store" class="btn">Comprar Rank</a>
-                    <a href="#about" class="btn btn-outline">Saiba Mais</a>
-                </div>
-                <div class="server-ip">redeleviathan.com</div>
-            </div>
-        </div>
-    </section>
+  <script>
+    let placar = {1: 0, 2: 0};
 
-    <section class="about" id="about">
-        <div class="container">
-            <h2 class="section-title">Sobre Nós</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>A Rede Leviathan é um servidor de Minecraft dedicado a proporcionar a melhor experiência de jogo para nossa comunidade. Com modos de jogo diversificados, eventos semanais e uma equipe comprometida, garantimos diversão para todos os tipos de jogadores.</p>
-                    <br>
-                    <p>Nossa rede oferece diversos modos de jogo incluindo Survival, Skyblock, Factions, Prison e muito mais. Todos os nossos servidores são otimizados para oferecer o melhor desempenho possível.</p>
-                    <br>
-                    <p>Com uma comunidade ativa e acolhedora, a Rede Leviathan é o lugar perfeito para fazer novos amigos e viver incríveis aventuras no universo de Minecraft.</p>
-                    <br>
-                    <a href="#features" class="btn">Ver Recursos</a>
-                </div>
-                <div class="about-image">
-                    <img src="https://i.imgur.com/JbIQ6Qo.png" alt="Servidor Leviathan">
-                </div>
-            </div>
-        </div>
-    </section>
+    // Carregar do LocalStorage ao iniciar
+    window.onload = function() {
+      let salvo = localStorage.getItem("placarSinuca");
+      if (salvo) {
+        let data = JSON.parse(salvo);
+        placar = data.placar;
+        document.getElementById("nome1").value = data.nome1;
+        document.getElementById("nome2").value = data.nome2;
+        atualizarPlacar(1);
+        atualizarPlacar(2);
+      }
+    }
 
-    <section class="ranks" id="ranks">
-        <div class="container">
-            <h2 class="section-title">Nossos Ranks</h2>
-            <p style="text-align: center; margin-bottom: 2rem;">Adquira um rank e desbloqueie benefícios exclusivos em nossa rede!</p>
-            
-            <div class="rank-container">
-                <div class="rank-card vip">
-                    <div class="rank-icon">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <h3>VIP</h3>
-                    <p>Acesso básico a benefícios exclusivos</p>
-                    <div class="price">R$ 29,90</div>
-                    <ul style="text-align: left; margin: 1rem 0; padding-left: 1.5rem;">
-                        <li>Tag no chat</li>
-                        <li>Acesso a /fly</li>
-                        <li>3 Homes</li>
-                        <li>Kits básicos</li>
-                    </ul>
-                    <a href="#store" class="btn">Comprar</a>
-                </div>
-                
-                <div class="rank-card vip-plus">
-                    <div class="rank-icon">
-                        <i class="fas fa-gem"></i>
-                    </div>
-                    <h3>VIP+</h3>
-                    <p>Benefícios aprimorados para jogadores dedicados</p>
-                    <div class="price">R$ 49,90</div>
-                    <ul style="text-align: left; margin: 1rem 0; padding-left: 1.5rem;">
-                        <li>Todos os benefícios VIP</li>
-                        <li>5 Homes</li>
-                        <li>Kits intermediários</li>
-                        <li>Acesso a /ec</li>
-                        <li>Prioridade no chat</li>
-                    </ul>
-                    <a href="#store" class="btn">Comprar</a>
-                </div>
-                
-                <div class="rank-card mvp">
-                    <div class="rank-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h3>MVP</h3>
-                    <p>Para jogadores que querem se destacar</p>
-                    <div class="price">R$ 79,90</div>
-                    <ul style="text-align: left; margin: 1rem 0; padding-left: 1.5rem;">
-                        <li>Todos os benefícios VIP+</li>
-                        <li>7 Homes</li>
-                        <li>Kits avançados</li>
-                        <li>Acesso a /hat</li>
-                        <li>Particulas exclusivas</li>
-                    </ul>
-                    <a href="#store" class="btn">Comprar</a>
-                </div>
-                
-                <div class="rank-card mvp-plus">
-                    <div class="rank-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>MVP+</h3>
-                    <p>Experiência premium completa</p>
-                    <div class="price">R$ 119,90</div>
-                    <ul style="text-align: left; margin: 1rem 0; padding-left: 1.5rem;">
-                        <li>Todos os benefícios MVP</li>
-                        <li>10 Homes</li>
-                        <li>Kits elite</li>
-                        <li>Acesso a todas as particulas</li>
-                        <li>Prioridade máxima no chat</li>
-                    </ul>
-                    <a href="#store" class="btn">Comprar</a>
-                </div>
-                
-                <div class="rank-card leviathan">
-                    <div class="rank-icon">
-                        <i class="fas fa-dragon"></i>
-                    </div>
-                    <h3>Leviathan</h3>
-                    <p>O rank máximo com todos os benefícios</p>
-                    <div class="price">R$ 199,90</div>
-                    <ul style="text-align: left; margin: 1rem 0; padding-left: 1.5rem;">
-                        <li>Todos os benefícios MVP+</li>
-                        <li>15 Homes</li>
-                        <li>Todos os kits</li>
-                        <li>Particulas exclusivas Leviathan</li>
-                        <li>Tag personalizada</li>
-                        <li>Acesso a beta tests</li>
-                    </ul>
-                    <a href="#store" class="btn">Comprar</a>
-                </div>
-            </div>
-        </div>
-    </section>
+    // Salvar no LocalStorage
+    function salvar() {
+      let data = {
+        nome1: document.getElementById("nome1").value,
+        nome2: document.getElementById("nome2").value,
+        placar: placar
+      };
+      localStorage.setItem("placarSinuca", JSON.stringify(data));
+    }
 
-    <section class="features" id="features">
-        <div class="container">
-            <h2 class="section-title">Recursos Exclusivos</h2>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-server"></i>
-                    </div>
-                    <h3>Servidores Otimizados</h3>
-                    <p>Hardware de última geração garantindo 99,9% de uptime e performance excepcional</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Comunidade Ativa</h3>
-                    <p>Mais de 10.000 jogadores ativos e uma equipe de staff sempre disponível</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <h3>Eventos Semanais</h3>
-                    <p>Batalhas PvP, construções criativas e muito mais com prêmios incríveis</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Anti-Cheat Avançado</h3>
-                    <p>Sistema de proteção contra hackers para garantir um jogo justo para todos</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3>Compatível com Bedrock</h3>
-                    <p>Jogue tanto na versão Java quanto na Bedrock (Windows 10, Mobile, Console)</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3>Sistema de Kits</h3>
-                    <p>Diversos kits exclusivos para cada modo de jogo e rank</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    function adicionarVitoria(jogador) {
+      placar[jogador]++;
+      atualizarPlacar(jogador);
+      salvar();
+    }
 
-    <section class="contact" id="contact">
-        <div class="container">
-            <h2 class="section-title">Fale Conosco</h2>
-            
-            <div class="contact-form">
-                <form>
-                    <div class="form-group">
-                        <label for="name">Nome</label>
-                        <input type="text" id="name" placeholder="Seu nome" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" placeholder="seu@email.com" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="subject">Assunto</label>
-                        <select id="subject" required>
-                            <option value="">Selecione...</option>
-                            <option value="support">Suporte</option>
-                            <option value="bug">Reportar Bug</option>
-                            <option value="suggestion">Sugestão</option>
-                            <option value="partnership">Parceria</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="message">Mensagem</label>
-                        <textarea id="message" rows="5" placeholder="Sua mensagem..." required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn">Enviar Mensagem</button>
-                </form>
-            </div>
-        </div>
-    </section>
+    function resetar(jogador) {
+      placar[jogador] = 0;
+      atualizarPlacar(jogador);
+      salvar();
+    }
 
-    <section id="store" style="background-color: rgba(26, 37, 47, 0.8); padding: 5rem 0; text-align: center;">
-        <div class="container">
-            <h2 class="section-title">Loja Virtual</h2>
-            <p style="margin-bottom: 2rem;">Adquira ranks, pacotes de moedas e itens exclusivos para melhorar sua experiência no servidor</p>
-            
-            <div style="max-width: 800px; margin: 0 auto; background-color: rgba(44, 62, 80, 0.8); padding: 2rem; border-radius: 8px;">
-                <h3 style="margin-bottom: 1.5rem; color: var(--secondary);">Em breve!</h3>
-                <p>Nossa loja virtual está em desenvolvimento e estará disponível em breve. Enquanto isso, você pode entrar em contato conosco para adquirir seu rank.</p>
-                <a href="#contact" class="btn" style="margin-top: 1.5rem;">Contato para Compra</a>
-            </div>
-        </div>
-    </section>
+    function atualizarPlacar(jogador) {
+      document.getElementById("vitorias" + jogador).innerText = 
+        "Vitórias: " + placar[jogador];
+    }
 
-    <footer>
-        <div class="container">
-            <div class="social-links">
-                <a href="#" target="_blank"><i class="fab fa-discord"></i></a>
-                <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
-                <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-            </div>
-            
-            <div class="server-ip">IP: redeleviathan.com</div>
-            
-            <p>&copy; 2023 Rede Leviathan. Todos os direitos reservados.</p>
-            <p style="margin-top: 0.5rem; font-size: 0.8rem;">Minecraft é uma marca registrada da Mojang Studios. Não somos afiliados à Mojang ou Microsoft.</p>
-        </div>
-    </footer>
-
-    <script>
-        // Menu mobile
-        const mobileMenu = document.getElementById('mobileMenu');
-        const navLinks = document.getElementById('navLinks');
-        
-        mobileMenu.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-        
-        // Fechar menu ao clicar em um link
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
-        });
-        
-        // Efeito de digitação
-        const typingText = document.querySelector('.typing-effect');
-        const text = "O servidor de Minecraft mais completo e divertido da atualidade! Jogue agora e experimente uma nova forma de diversão com seus amigos.";
-        let i = 0;
-        
-        function typeWriter() {
-            if (i < text.length) {
-                typingText.textContent += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, Math.random() * 50 + 30);
-            } else {
-                typingText.style.borderRight = 'none';
-            }
-        }
-        
-        // Iniciar efeito após 1s
-        setTimeout(() => {
-            typingText.textContent = '';
-            typeWriter();
-        }, 1000);
-        
-        // Smooth scroll para links internos
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
+    // Sempre que o nome mudar, salva
+    document.getElementById("nome1").addEventListener("input", salvar);
+    document.getElementById("nome2").addEventListener("input", salvar);
+  </script>
 </body>
 </html>
