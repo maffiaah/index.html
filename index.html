@@ -1,127 +1,423 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Placar de Sinuca</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0b3d0b;
-      color: #fff;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      margin-bottom: 10px;
-    }
-    .placar {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-    .jogador {
-      background: #145214;
-      padding: 20px;
-      border-radius: 10px;
-      width: 40%;
-      margin: 10px;
-      min-width: 200px;
-    }
-    input {
-      padding: 8px;
-      font-size: 16px;
-      margin-bottom: 10px;
-      width: 80%;
-      border: none;
-      border-radius: 5px;
-      text-align: center;
-    }
-    button {
-      padding: 10px 20px;
-      margin: 5px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      background: #ffcc00;
-      color: #000;
-      font-weight: bold;
-    }
-    button:hover {
-      background: #e6b800;
-    }
-    .vitorias {
-      font-size: 22px;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TERMO - Corrigido</title>
+<style>
+  :root{
+    --bg:#121213;
+    --border:#3a3a3c;
+    --tile:#121213;
+    --green:#538d4e;
+    --yellow:#b59f3b;
+    --gray:#3a3a3c;
+    --key:#818384;
+    --text:#ffffff;
+  }
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Inter, Arial, sans-serif;
+    padding:18px;
+  }
+  .app{
+    width:100%;
+    max-width:520px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  h1{
+    margin:6px 0 14px;
+    font-size:34px;
+    letter-spacing:6px;
+  }
+  #tabuleiro{ display:grid; gap:8px; margin-bottom:16px; width:100%; }
+  .linha{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:8px;
+  }
+  .bloco{
+    aspect-ratio:1/1;
+    background:var(--tile);
+    border:3px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    font-weight:700;
+    text-transform:uppercase;
+    cursor:pointer;
+    user-select:none;
+  }
+  .bloco.ativo{ border-color:var(--yellow); transform:scale(1.02); }
+  .bloco.certa{ background:var(--green); border-color:var(--green); color:white; }
+  .bloco.parcial{ background:var(--yellow); border-color:var(--yellow); color:white; }
+  .bloco.errada{ background:var(--gray); border-color:var(--gray); color:white; }
+
+  #teclado{ width:100%; max-width:480px; display:flex; flex-direction:column; gap:8px; align-items:center; }
+  .linha-teclado{ display:flex; justify-content:center; gap:6px; flex-wrap:wrap; }
+  button.key{
+    min-width:38px;
+    padding:10px 12px;
+    border-radius:8px;
+    border:none;
+    background:var(--key);
+    color:var(--text);
+    font-weight:700;
+    text-transform:uppercase;
+    cursor:pointer;
+    user-select:none;
+  }
+  button.key.small{ min-width:32px; padding:8px 10px; }
+  button.key.green{ background:var(--green); }
+  button.key.yellow{ background:var(--yellow); color:#000; }
+  button.key.gray{ background:var(--gray); }
+
+  @media (max-width:600px){
+    .bloco{ font-size:20px; }
+    button.key{ padding:8px 10px; min-width:34px; }
+  }
+</style>
 </head>
 <body>
-  <h1>🏆 Placar de Sinuca</h1>
-  <div class="placar">
-    <div class="jogador">
-      <input id="nome1" type="text" placeholder="Nome do Jogador 1">
-      <div class="vitorias" id="vitorias1">Vitórias: 0</div>
-      <button onclick="adicionarVitoria(1)">+1 Vitória</button>
-      <button onclick="resetar(1)">Resetar</button>
-    </div>
-    <div class="jogador">
-      <input id="nome2" type="text" placeholder="Nome do Jogador 2">
-      <div class="vitorias" id="vitorias2">Vitórias: 0</div>
-      <button onclick="adicionarVitoria(2)">+1 Vitória</button>
-      <button onclick="resetar(2)">Resetar</button>
-    </div>
+  <div class="app">
+    <h1>TERMO</h1>
+    <div id="tabuleiro"></div>
+    <div id="teclado"></div>
   </div>
 
-  <script>
-    let placar = {1: 0, 2: 0};
+<script>
+/* ====== Lista de palavras (5 letras) ====== */
+const palavras = [
+ "mundo","terra","verde","falar","praia","pular","tempo","vento","folha","trapo",
+ "casal","banho","carro","pente","doido","festa","moeda","noite","lento","amigo",
+ "lapis","farda","reino","magia","risco","troca","plano","ponto","nuvem","fatos",
+ "chave","livro","claro","touro","areia","creme","nobre","pacto","mural","tinta",
+ "velha","cinto","repor","fazer","pasto","vapor","sonho","massa","porta","navio",
+ "cabra","bando","faixa","sinal","caixa","prato","outra","limpo","bruto","sorte",
+ "ciclo","balde","canto","arido","jogar","ficha","lousa","piano","viola","flaut",
+ "bater","corpo","mente","humor","ritmo","pista","cenas","drama","filme","ator",
+ "musica","notas","acorde","som","verso","poema","livro","conto","fabul","mito",
+ "heroi","vila","cidade","rua","parque","jardim","flores","arvore","planta","fruto"
+];
 
-    // Carregar do LocalStorage ao iniciar
-    window.onload = function() {
-      let salvo = localStorage.getItem("placarSinuca");
-      if (salvo) {
-        let data = JSON.parse(salvo);
-        placar = data.placar;
-        document.getElementById("nome1").value = data.nome1;
-        document.getElementById("nome2").value = data.nome2;
-        atualizarPlacar(1);
-        atualizarPlacar(2);
+/* Remover eventuais entradas inválidas e garantir 5 letras */
+const palavras5 = palavras.filter(w => typeof w === 'string' && w.length === 5).map(w => w.toLowerCase());
+
+/* estado do jogo */
+let palavraAlvo = "";
+let linhaAtual = 0;
+let colunaAtual = 0;
+let palavraAtual = "";
+let blocoSelecionado = null;
+
+/* elementos */
+const tabuleiro = document.getElementById("tabuleiro");
+const teclado = document.getElementById("teclado");
+
+function criarTeclado(){
+  teclado.innerHTML = "";
+  const rows = ["qwertyuiop","asdfghjkl","enterzxcvbnm⌫"];
+  rows.forEach((r, idx) => {
+    const div = document.createElement("div");
+    div.className = "linha-teclado";
+    // se for a 3ª linha, montar Enter, letras e Backspace
+    if(idx === 2){
+      const enter = criarKey("Enter","enter big");
+      div.appendChild(enter);
+      "zxcvbnm".split("").forEach(ch => {
+        div.appendChild(criarKey(ch));
+      });
+      const back = criarKey("⌫","back big");
+      div.appendChild(back);
+    } else {
+      r.split("").forEach(ch => {
+        div.appendChild(criarKey(ch));
+      });
+    }
+    teclado.appendChild(div);
+  });
+}
+
+function criarKey(text, extraClass = ""){
+  const b = document.createElement("button");
+  b.className = "key " + extraClass;
+  b.textContent = text;
+  b.onclick = () => onKeyClick(text);
+  return b;
+}
+
+function criarTabuleiro(){
+  tabuleiro.innerHTML = "";
+  for(let i = 0; i < 6; i++){
+    const linha = document.createElement("div");
+    linha.className = "linha";
+    for(let j = 0; j < 5; j++){
+      const bloco = document.createElement("div");
+      bloco.className = "bloco";
+      bloco.dataset.row = i;
+      bloco.dataset.col = j;
+      bloco.onclick = () => selecionarBloco(bloco, i, j);
+      linha.appendChild(bloco);
+    }
+    tabuleiro.appendChild(linha);
+  }
+}
+
+/* inicia nova palavra */
+function novaRodada(){
+  palavraAlvo = palavras5[Math.floor(Math.random() * palavras5.length)];
+  linhaAtual = 0;
+  colunaAtual = 0;
+  palavraAtual = "";
+  blocoSelecionado = null;
+  // recriar board e teclado (limpa classes)
+  criarTabuleiro();
+  // reset teclado classes
+  [...document.querySelectorAll("button.key")].forEach(b => {
+    b.classList.remove("green","yellow","gray");
+  });
+  console.log("Palavra alvo (debug):", palavraAlvo); // remova em produção
+}
+
+/* selecionar bloco - só permite selecionar na linha atual */
+function selecionarBloco(bloco, row, col){
+  if(row !== linhaAtual) return;
+  if(blocoSelecionado) blocoSelecionado.classList.remove("ativo");
+  blocoSelecionado = bloco;
+  bloco.classList.add("ativo");
+  colunaAtual = col;
+}
+
+/* evento do teclado virtual */
+function onKeyClick(key){
+  if(key === "Enter" || key === "enter") return submeter();
+  if(key === "⌫") return backspace();
+  // letra
+  if(/^[a-zA-Z]$/.test(key)){
+    inserirLetra(key.toLowerCase());
+  }
+}
+
+/* Inserir letra na posição atual - limita 0..4 */
+function inserirLetra(letra){
+  const linha = tabuleiro.children[linhaAtual];
+  if(!linha) return;
+  
+  let targetCol = colunaAtual;
+  if(targetCol < 0) targetCol = 0;
+  if(targetCol > 4) targetCol = 4;
+  
+  const bloco = linha.children[targetCol];
+  bloco.textContent = letra;
+  // remover estado visual antigo (se houver)
+  bloco.classList.remove("certa","parcial","errada");
+  
+  // atualiza palavraAtual
+  atualizarPalavraAtualDaLinha();
+  
+  // avança coluna até 4
+  if(colunaAtual < 4) colunaAtual++;
+  
+  // se havia bloco selecionado, atualizar seleção para próximo
+  if(blocoSelecionado){
+    blocoSelecionado.classList.remove("ativo");
+    // selecionar o novo bloco (se não no fim)
+    const novo = linha.children[Math.min(colunaAtual, 4)];
+    blocoSelecionado = novo;
+    novo.classList.add("ativo");
+  }
+}
+
+/* Backspace */
+function backspace(){
+  const linha = tabuleiro.children[linhaAtual];
+  if(!linha) return;
+  
+  // se posição atual está vazia e >0, volta uma casa
+  if(colunaAtual > 0 && linha.children[colunaAtual].textContent === ""){
+    colunaAtual--;
+  }
+  
+  const bloco = linha.children[colunaAtual];
+  bloco.textContent = "";
+  bloco.classList.remove("certa","parcial","errada");
+  atualizarPalavraAtualDaLinha();
+  
+  if(blocoSelecionado){
+    blocoSelecionado.classList.remove("ativo");
+    blocoSelecionado = linha.children[colunaAtual];
+    blocoSelecionado.classList.add("ativo");
+  }
+}
+
+/* atualiza palavraAtual a partir da linha atual */
+function atualizarPalavraAtualDaLinha(){
+  const linha = tabuleiro.children[linhaAtual];
+  let s = "";
+  for(let i = 0; i < 5; i++){
+    s += (linha.children[i].textContent || "");
+  }
+  palavraAtual = s.toLowerCase();
+}
+
+/* lógica de verificação CORRIGIDA */
+function submeter(){
+  atualizarPalavraAtualDaLinha();
+  
+  // VERIFICAÇÃO CORRIGIDA - apenas verifica comprimento
+  if(palavraAtual.length !== 5) {
+    alert("Digite 5 letras");
+    return;
+  }
+
+  // Verificação adicional - garante que todos os blocos estão preenchidos
+  const linha = tabuleiro.children[linhaAtual];
+  let todosPreenchidos = true;
+  
+  for(let i = 0; i < 5; i++) {
+    if(!linha.children[i].textContent.trim()) {
+      todosPreenchidos = false;
+      break;
+    }
+  }
+  
+  if(!todosPreenchidos) {
+    alert("Complete todas as 5 letras");
+    return;
+  }
+
+  // regra Wordle: primeiro marca exatos, depois marca parciais com base em contagem restante
+  const alvo = palavraAlvo.split("");
+  const tentativa = palavraAtual.split("");
+  // mapa de contagem das letras que NÃO foram marcadas como exatas
+  const restante = {};
+
+  // 1) marcar exatos e construir restante
+  for(let i = 0; i < 5; i++){
+    const t = tentativa[i];
+    if(t === alvo[i]){
+      // decrementar do alvo virtual (substituir por null para não contar depois)
+      alvo[i] = null;
+    } else {
+      // conta letra do alvo (apenas as que não são exatas)
+      if(alvo[i] !== null){
+        restante[alvo[i]] = (restante[alvo[i]] || 0) + 1;
       }
     }
+  }
 
-    // Salvar no LocalStorage
-    function salvar() {
-      let data = {
-        nome1: document.getElementById("nome1").value,
-        nome2: document.getElementById("nome2").value,
-        placar: placar
-      };
-      localStorage.setItem("placarSinuca", JSON.stringify(data));
+  // 2) aplicar classes (segundo passe: exatos e parciais/erradas)
+  // Primeiro mark exatos (para aplicar ordem visual)
+  for(let i = 0; i < 5; i++){
+    const bloco = linha.children[i];
+    const t = tentativa[i];
+    if(palavraAlvo[i] === t){
+      // exato
+      bloco.classList.add("certa");
+      // atualizar teclado
+      marcarTecla(t,"green");
     }
+  }
 
-    function adicionarVitoria(jogador) {
-      placar[jogador]++;
-      atualizarPlacar(jogador);
-      salvar();
+  // Agora operamos sobre letras não-exatas para parciais/erradas considerando 'restante'
+  for(let i = 0; i < 5; i++){
+    const bloco = linha.children[i];
+    if(bloco.classList.contains("certa")) continue; // já marcada
+    const t = tentativa[i];
+    if(restante[t] && restante[t] > 0){
+      // parcial
+      bloco.classList.add("parcial");
+      restante[t]--;
+      // atualizar teclado se ainda não for verde
+      marcarTecla(t,"yellow");
+    } else {
+      // errada
+      bloco.classList.add("errada");
+      marcarTecla(t,"gray");
     }
+  }
 
-    function resetar(jogador) {
-      placar[jogador] = 0;
-      atualizarPlacar(jogador);
-      salvar();
+  // Se acerto completo
+  if(palavraAtual === palavraAlvo){
+    setTimeout(() => { 
+      alert("🎉 Você acertou! Próxima palavra..."); 
+      novaRodada(); 
+    }, 350);
+    return;
+  }
+
+  // Avança linha; se acabou as chances, mostra e reinicia
+  linhaAtual++;
+  colunaAtual = 0;
+  palavraAtual = "";
+  blocoSelecionado = null;
+  
+  if(linhaAtual >= 6){
+    setTimeout(() => { 
+      alert("💀 Fim! A palavra era: " + palavraAlvo.toUpperCase()); 
+      novaRodada(); 
+    }, 350);
+  }
+}
+
+/* marca a tecla do teclado (prioridade: green > yellow > gray) */
+function marcarTecla(letra, cor){
+  letra = (letra || "").toLowerCase();
+  if(!letra) return;
+  // encontra botão cuja textContent (lower) === letra
+  const btn = [...document.querySelectorAll("button.key")].find(b => {
+    return b.textContent.toLowerCase() === letra;
+  });
+  if(!btn) return;
+  // prioridade: se já verde, não mudar
+  if(btn.classList.contains("green")) return;
+  if(cor === "green"){
+    btn.classList.remove("yellow","gray");
+    btn.classList.add("green");
+  } else if(cor === "yellow"){
+    if(!btn.classList.contains("green")){
+      btn.classList.remove("gray");
+      btn.classList.add("yellow");
     }
-
-    function atualizarPlacar(jogador) {
-      document.getElementById("vitorias" + jogador).innerText = 
-        "Vitórias: " + placar[jogador];
+  } else if(cor === "gray"){
+    if(!btn.classList.contains("green") && !btn.classList.contains("yellow")){
+      btn.classList.add("gray");
     }
+  }
+}
 
-    // Sempre que o nome mudar, salva
-    document.getElementById("nome1").addEventListener("input", salvar);
-    document.getElementById("nome2").addEventListener("input", salvar);
-  </script>
+/* teclado físico */
+window.addEventListener("keydown", (e) => {
+  if(e.key === "Backspace") { 
+    e.preventDefault(); 
+    backspace(); 
+    return; 
+  }
+  if(e.key === "Enter") { 
+    e.preventDefault(); 
+    submeter(); 
+    return; 
+  }
+  const k = e.key.toLowerCase();
+  if(/^[a-z]$/.test(k)){
+    e.preventDefault();
+    inserirLetra(k);
+  }
+});
+
+/* inicializar */
+criarTeclado();
+criarTabuleiro();
+novaRodada();
+</script>
 </body>
 </html>
