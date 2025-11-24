@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>TERMO DO BAGRAO - Corrigido</title>
+<title>TERMO</title>
 <style>
   :root{
     --bg:#121213;
@@ -62,11 +62,25 @@
   .bloco.parcial{ background:var(--yellow); border-color:var(--yellow); color:white; }
   .bloco.errada{ background:var(--gray); border-color:var(--gray); color:white; }
 
-  #teclado{ width:100%; max-width:480px; display:flex; flex-direction:column; gap:8px; align-items:center; }
-  .linha-teclado{ display:flex; justify-content:center; gap:6px; flex-wrap:wrap; }
+  #teclado{ 
+    width:100%; 
+    max-width:480px; 
+    display:flex; 
+    flex-direction:column; 
+    gap:8px; 
+    align-items:center; 
+    margin-bottom: 20px;
+  }
+  .linha-teclado{ 
+    display:flex; 
+    justify-content:center; 
+    gap:6px; 
+    flex-wrap:wrap; 
+  }
   button.key{
     min-width:38px;
-    padding:10px 12px;
+    height:58px;
+    padding:0 12px;
     border-radius:8px;
     border:none;
     background:var(--key);
@@ -75,15 +89,32 @@
     text-transform:uppercase;
     cursor:pointer;
     user-select:none;
+    font-size: 16px;
   }
-  button.key.small{ min-width:32px; padding:8px 10px; }
+  button.key.big{ 
+    min-width:80px; 
+    font-size: 14px;
+  }
   button.key.green{ background:var(--green); }
   button.key.yellow{ background:var(--yellow); color:#000; }
   button.key.gray{ background:var(--gray); }
 
+  .site-link {
+    color: #818384;
+    font-size: 14px;
+    margin-top: 10px;
+    text-decoration: none;
+  }
+
   @media (max-width:600px){
     .bloco{ font-size:20px; }
-    button.key{ padding:8px 10px; min-width:34px; }
+    button.key{ 
+      min-width:30px; 
+      height:50px;
+      padding:0 8px;
+      font-size: 14px;
+    }
+    button.key.big{ min-width:60px; }
   }
 </style>
 </head>
@@ -92,6 +123,7 @@
     <h1>TERMO</h1>
     <div id="tabuleiro"></div>
     <div id="teclado"></div>
+    <a href="https://sugar-dance.org" class="site-link">sugar-dance.org</a>
   </div>
 
 <script>
@@ -125,24 +157,23 @@ const teclado = document.getElementById("teclado");
 
 function criarTeclado(){
   teclado.innerHTML = "";
-  const rows = ["qwertyuiop","asdfghjkl","enterzxcvbnm⌫"];
-  rows.forEach((r, idx) => {
+  
+  // Layout corrigido conforme a imagem IMG_4176.png
+  const rows = [
+    ["W", "E", "R", "T", "Y", "U", "I", "O"], // 8 teclas
+    ["A", "S", "D", "F", "G", "H", "J", "K", "L"], // 9 teclas
+    ["Z", "X", "C", "V", "B", "N", "M", "ENTER"] // 8 teclas
+  ];
+  
+  rows.forEach((rowKeys, idx) => {
     const div = document.createElement("div");
     div.className = "linha-teclado";
-    // se for a 3ª linha, montar Enter, letras e Backspace
-    if(idx === 2){
-      const enter = criarKey("Enter","enter big");
-      div.appendChild(enter);
-      "zxcvbnm".split("").forEach(ch => {
-        div.appendChild(criarKey(ch));
-      });
-      const back = criarKey("⌫","back big");
-      div.appendChild(back);
-    } else {
-      r.split("").forEach(ch => {
-        div.appendChild(criarKey(ch));
-      });
-    }
+    
+    rowKeys.forEach(key => {
+      const extraClass = key === "ENTER" ? "big" : "";
+      div.appendChild(criarKey(key, extraClass));
+    });
+    
     teclado.appendChild(div);
   });
 }
@@ -199,10 +230,9 @@ function selecionarBloco(bloco, row, col){
 
 /* evento do teclado virtual */
 function onKeyClick(key){
-  if(key === "Enter" || key === "enter") return submeter();
-  if(key === "⌫") return backspace();
+  if(key === "ENTER") return submeter();
   // letra
-  if(/^[a-zA-Z]$/.test(key)){
+  if(/^[A-Z]$/.test(key)){
     inserirLetra(key.toLowerCase());
   }
 }
@@ -421,4 +451,3 @@ novaRodada();
 </script>
 </body>
 </html>
-
